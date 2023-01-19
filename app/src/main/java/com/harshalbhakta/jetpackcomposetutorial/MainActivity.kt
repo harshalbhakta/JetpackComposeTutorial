@@ -1,9 +1,11 @@
 package com.harshalbhakta.jetpackcomposetutorial
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
@@ -21,7 +23,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MessageCard(Message("Harshal", "Hey! How are you?"))
+            JetpackComposeTutorialTheme {
+                MessageCard(Message("Harshal", "Hey! How are you?"))
+            }
         }
     }
 }
@@ -37,21 +41,39 @@ fun MessageCard(message: Message) {
             modifier = Modifier
                 .size(40.dp)
                 .clip(CircleShape)
+                .border(1.5.dp, MaterialTheme.colors.secondary, CircleShape)
         )
 
         // Add a horizontal space between the image and the column
         Spacer(modifier = Modifier.width(8.dp))
 
         Column {
-            Text(text = message.author)
+            Text(
+                text = message.author,
+                color = MaterialTheme.colors.secondaryVariant,
+                style = MaterialTheme.typography.subtitle2
+            )
             Spacer(modifier = Modifier.height(4.dp))
-            Text(text = message.body)
+            Surface(shape = MaterialTheme.shapes.medium, elevation = 1.dp) {
+                Text(
+                    text = message.body,
+                    modifier = Modifier.padding(all = 4.dp),
+                    style = MaterialTheme.typography.body2
+                )
+            }
         }
     }
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+    name = "Dark Mode"
+)
 @Composable
 fun PreviewMessageCard() {
-    MessageCard(Message("Harshal", "Hey! How are you?"))
+    JetpackComposeTutorialTheme {
+        MessageCard(Message("Harshal", "Hey! How are you?"))
+    }
 }
